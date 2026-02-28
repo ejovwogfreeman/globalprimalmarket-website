@@ -1,0 +1,661 @@
+/* ================= GLOBAL ================= */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0d1117;
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+section {
+  width: 100%;
+}
+
+/* ================= HERO CAROUSEL ================= */
+
+.hero {
+  position: relative;
+  height: 95vh;
+  overflow: hidden;
+  padding-top: 70px;
+}
+
+.heroSlide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.heroSlide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Softer gradient overlay (NOT too dark) */
+.overlay {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  background: linear-gradient(
+    to right,
+    rgba(13, 17, 23, 0.8),
+    rgba(13, 17, 23, 0.8),
+    rgba(13, 17, 23, 0.8)
+  );
+}
+
+.overlay h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin: 0px;
+  color: #38bdf8;
+}
+
+.overlay p {
+  font-size: 20px;
+  max-width: 500px;
+  color: #c9d1d9;
+}
+
+.overlay button {
+  width: 200px;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  background: #38bdf8;
+  color: #0d1117;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.overlay button:hover {
+  background: #0ea5e9;
+}
+
+/* ================= ABOUT ================= */
+
+.about {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.about h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+.about p {
+  max-width: 700px;
+  margin: auto;
+  color: #aab1b8;
+  line-height: 1.7;
+}
+
+/* ================= FEATURES ================= */
+
+.features {
+  padding: 80px 10%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.feature {
+  flex: 1;
+  min-width: 250px;
+  background: #161b22;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.feature svg {
+  color: #38bdf8;
+}
+
+.feature:hover {
+  transform: translateY(-6px);
+  background: #1f2630;
+}
+
+.feature h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.feature p {
+  color: #aab1b8;
+}
+
+/* ================= MARKET SECTION ================= */
+
+.marketSection {
+  padding: 100px 10%;
+}
+
+.live-market-crypto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.live-market-crypto a {
+  color: #0ea5e9;
+}
+
+.marketSection h2 {
+  /* margin-bottom: 40px; */
+  color: #38bdf8;
+}
+
+.marketList {
+  width: 100%;
+}
+
+.marketList a {
+  text-decoration: none;
+  color: white;
+}
+
+.marketRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #1f2937;
+  transition: 0.2s ease;
+}
+
+.marketRow:hover {
+  background: #161b22;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 8px;
+}
+
+.marketRow .left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.marketRow img {
+  width: 40px;
+  height: 40px;
+}
+
+.marketRow strong {
+  font-size: 16px;
+}
+
+.marketRow span {
+  display: block;
+  font-size: 13px;
+  color: #8892a0;
+}
+
+.marketRow .right {
+  text-align: right;
+}
+
+.green {
+  color: #16c784;
+  font-weight: 600;
+}
+
+.red {
+  color: #ea3943;
+  font-weight: 600;
+}
+
+.loading {
+  color: #8892a0;
+}
+
+/* ================= TESTIMONIALS ================= */
+
+.testimonials {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.testimonials h2 {
+  margin-bottom: 50px;
+  color: #38bdf8;
+}
+
+.testimonialGrid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.testimonialCard {
+  background: #161b22;
+  padding: 35px;
+  border-radius: 12px;
+  max-width: 320px;
+  transition: 0.3s ease;
+}
+
+.testimonialCard:hover {
+  background: #1f2630;
+}
+
+.testimonialCard p {
+  color: #c9d1d9;
+  margin-bottom: 15px;
+}
+
+/* ================= CTA ================= */
+
+.cta {
+  /* background: #38bdf8;
+  color: #0d1117; */
+  background: #161b22;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.cta h2 {
+  font-size: 36px;
+  color: #38bdf8;
+}
+
+.cta p {
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+.cta button {
+  width: 200px;
+  margin-top: 30px;
+  padding: 14px;
+  border: none;
+  background: #38bdf8;
+  color: #0d1117;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.cta button:hover {
+  background: #0ea5e9;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+  .overlay h1 {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 55vh;
+  }
+  .overlay {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .overlay h1 {
+    font-size: 30px;
+  }
+
+  .overlay p {
+    font-size: 15px;
+  }
+
+  .features {
+    flex-direction: column;
+  }
+
+  .testimonialGrid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ================= HOW IT WORKS ================= */
+.howItWorks {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.howItWorks h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: #38bdf8;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.step {
+  flex: 1;
+  min-width: 220px;
+  background: #161b22;
+  padding: 35px;
+  border-radius: 12px;
+  transition: 0.3s ease;
+  text-align: center;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  background: #1f2630;
+}
+
+.step h3 {
+  color: #38bdf8;
+  margin-bottom: 15px;
+}
+
+.step p {
+  color: #aab1b8;
+  line-height: 1.6;
+}
+
+/* ================= PARTNERS ================= */
+.partners {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.partners h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: #38bdf8;
+}
+
+.partnerLogos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.partnerLogos img {
+  max-width: 120px;
+  max-height: 60px;
+  filter: brightness(0) invert(1); /* make logos light on dark bg */
+  transition: 0.3s ease;
+}
+
+.partnerLogos img:hover {
+  filter: brightness(0) invert(0.7) sepia(1) hue-rotate(180deg) saturate(3);
+  transform: scale(1.1);
+}
+
+/* ================= FAQ ================= */
+.faq {
+  padding: 100px 10%;
+}
+
+.faq h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: #38bdf8;
+  text-align: center;
+}
+
+.faqItem {
+  background: #161b22;
+  padding: 25px 30px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  transition: 0.3s ease;
+}
+
+.faqItem:hover {
+  background: #1f2630;
+}
+
+.faqItem h4 {
+  color: #38bdf8;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.faqItem p {
+  color: #aab1b8;
+  line-height: 1.6;
+}
+
+/* ================= RESPONSIVE UPDATES ================= */
+@media (max-width: 1024px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partnerLogos {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .howItWorks {
+    padding: 60px 6%;
+  }
+
+  .partners {
+    padding: 60px 6%;
+  }
+
+  .faq {
+    padding: 60px 6%;
+  }
+
+  .step {
+    min-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .partnerLogos img {
+    max-width: 90px;
+    max-height: 50px;
+  }
+}
+
+/* ================= CONTACT ================= */
+.contact {
+  padding: 100px 10%;
+  background: #161b22;
+}
+
+.contact h2 {
+  font-size: 36px;
+  color: #38bdf8;
+  margin-bottom: 40px;
+}
+
+.contactContainer {
+  display: flex;
+  /* gap: 50px; */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.contactInfo {
+  flex: 1;
+}
+
+.contactInfo p {
+  font-size: 18px;
+  color: #aab1b8;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.contactInfo .icon {
+  font-size: 24px;
+  color: #38bdf8;
+  margin-right: 15px;
+}
+
+.contactImage {
+  flex: 1;
+}
+
+.contactImage img {
+  width: 100%;
+  height: 500px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+
+.contactMap iframe {
+  border-radius: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contactContainer {
+    display: block;
+  }
+
+  .contactImage img {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .marketSection {
+    padding: 100px 6%;
+  }
+
+  .contact {
+    padding: 100px 6%;
+    background: #161b22;
+  }
+}
+
+.crypto-container {
+  margin-top: 100px;
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* Center loading or error messages */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.crypto-content {
+  padding: 2rem 1rem;
+}
+
+.back-btn {
+  background-color: #38bdf8;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: #000;
+  font-weight: bold;
+  transition: 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.coin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.coin-header img {
+  width: 50px;
+  min-width: 50px;
+}
+
+.coin-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.coin-description {
+  max-width: 800px;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.coin-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.coin-stats p {
+  margin: 0;
+}
+
+.positive {
+  color: #22c55e;
+}
+
+.negative {
+  color: #f87171;
+}
+
+.chart-container {
+  margin-top: 2rem;
+  width: 100%;
+  height: 400px;
+}
+
+@media (max-width: 768px) {
+  .coin-stats {
+    flex-direction: column;
+  }
+  .coin-header h1 {
+    font-size: 1.5rem;
+  }
+  .chart-container {
+    height: 300px;
+  }
+  .back-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
