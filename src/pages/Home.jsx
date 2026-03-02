@@ -82,7 +82,7 @@ export default function Home() {
             <div className="overlay">
               <h1>{slide.title}</h1>
               <p>{slide.text}</p>
-              <button>Get Started</button>
+              <Link to="/login">Get Started</Link>
             </div>
           </div>
         ))}
