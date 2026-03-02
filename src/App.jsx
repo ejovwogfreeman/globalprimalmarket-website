@@ -20,6 +20,9 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Crypto from "./pages/Crypto";
 import CryptoDetail from "./pages/CryptoDetail";
+import Register from "./pages/Register";
+import Verify from "./pages/Verify";
+import Successful from "./pages/Successful";
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
         {/* Public Route */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verify />} />
+        <Route path="/successful" element={<Successful />} />
         <Route path="/crypto" element={<Crypto />} />
         <Route path="/crypto/:id" element={<CryptoDetail />} />
         {/* Protected Routes */}

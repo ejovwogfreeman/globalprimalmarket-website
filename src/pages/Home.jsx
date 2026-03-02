@@ -82,7 +82,13 @@ export default function Home() {
             <div className="overlay">
               <h1>{slide.title}</h1>
               <p>{slide.text}</p>
-              <Link to="/login">Get Started</Link>
+              <Link
+                to="/login"
+                className="btn"
+                style={{ textDecoration: "none" }}
+              >
+                Get Started
+              </Link>
             </div>
           </div>
         ))}

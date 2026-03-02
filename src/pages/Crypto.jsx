@@ -65,7 +65,7 @@ export default function Crypto() {
       <Navbar />
 
       {/* ================= LIVE MARKET ================= */}
-      <section className="marketSection">
+      <section className="marketSection" style={{ paddingBottom: "50px" }}>
         {/* Back Button */}
         <Link className="back-btn" to="/" style={{ marginBottom: "20px" }}>
           &larr; Back to Home

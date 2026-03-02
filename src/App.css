@@ -112,6 +112,29 @@ input[type="file"] {
   margin-bottom: 20px;
 }
 
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.auth-footer {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.auth-link {
+  font-weight: 600;
+  color: #0ea5e9;
+}
+
 /* Navbar container */
 /* ===== NAVBAR BASE ===== */
 .navbar {

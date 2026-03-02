@@ -31,7 +31,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
     toast.success("Logout Successful!");
     setIsAuthenticated(false);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
