@@ -59,6 +59,40 @@ const Transaction = () => {
     }
   }, [transaction]);
 
+  const handleClaimBonus = async (transactionId) => {
+    try {
+      // Show a loading toast while processing
+      const loadingToast = toast.info("Claiming bonus...", {
+        autoClose: false,
+      });
+
+      const res = await fetch(
+        `${BASE_URL}/transactions/${transactionId}/claim-bonus`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      const data = await res.json();
+      toast.dismiss(loadingToast); // remove loading toast
+
+      if (res.ok && data.success) {
+        toast.success(`Bonus claimed! Amount: ${data.bonus}`);
+        // Optionally refresh user data here
+        navigate("/dashboard");
+      } else {
+        toast.error(data.message || "Failed to claim bonus");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while claiming bonus");
+    }
+  };
+
   if (loading) {
     return (
       <div className="spinner-wrapper">
@@ -256,11 +290,7 @@ const Transaction = () => {
                     cursor: "pointer",
                     border: "none",
                   }}
-                  onClick={() => {
-                    toast.success("Your bonus has been successfully claimed!");
-                    // TODO: call backend API to mark bonus as claimed
-                    navigate("/dashboard");
-                  }}
+                  onClick={() => handleClaimBonus(transaction._id)}
                 >
                   Claim Bonus
                 </button>
