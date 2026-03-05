@@ -12,6 +12,7 @@ import {
   FaQuestionCircle,
   FaUserPlus,
   FaSignInAlt,
+  FaUser,
 } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import { toast } from "react-toastify";
@@ -65,6 +66,7 @@ const Navbar = () => {
               to="/login"
               onClick={() => setMenuOpen(false)}
               id="logout-btn"
+              style={{ color: "#0F172A" }}
             >
               <FaSignInAlt style={{ marginRight: 5 }} /> Login
             </Link>
@@ -83,8 +85,15 @@ const Navbar = () => {
             <Link to="/bots" onClick={() => setMenuOpen(false)}>
               <FaRobot style={{ marginRight: 5 }} /> Bots
             </Link>
+            <Link to="/profile" onClick={() => setMenuOpen(false)}>
+              <FaUser style={{ marginRight: 5 }} /> Profile
+            </Link>
 
-            <button onClick={handleLogout} className="logout-btn">
+            <button
+              onClick={handleLogout}
+              className="logout-btn"
+              style={{ color: "#0F172A" }}
+            >
               <FaSignOutAlt style={{ marginRight: 5 }} /> Logout
             </button>
           </>

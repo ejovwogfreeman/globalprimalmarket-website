@@ -6,6 +6,15 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../data";
 import { FaRobot } from "react-icons/fa";
 
+const CRYPTO_MODES = [
+  { symbol: "btc", rate: 40000 },
+  { symbol: "eth", rate: 2500 },
+  { symbol: "sol", rate: 120 },
+  { symbol: "trx", rate: 0.07 },
+  { symbol: "bnb", rate: 350 },
+  { symbol: "xrp", rate: 0.5 },
+];
+
 const Bot = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,17 +22,11 @@ const Bot = () => {
   const [bot, setBot] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ---------------- Modal States ----------------
-  const [showStatusModal, setShowStatusModal] = useState(false);
-  const [statusLoading, setStatusLoading] = useState(false);
-  const [newStatus, setNewStatus] = useState("");
-
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updateLoading, setUpdateLoading] = useState(false);
-  const [updateData, setUpdateData] = useState({ name: "", description: "" });
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [selectedMode, setSelectedMode] = useState("");
+  const [proofs, setProofs] = useState([]);
+  const [proofPreviews, setProofPreviews] = useState([]);
+  const [purchaseLoading, setPurchaseLoading] = useState(false);
 
   // ---------------- Fetch Bot ----------------
   const fetchBot = async () => {
@@ -39,7 +42,7 @@ const Bot = () => {
       const data = await res.json();
       setBot(data.bot);
     } catch (error) {
-      console.error(error);
+      toast.error("Failed to load bot");
     } finally {
       setLoading(false);
     }
@@ -49,97 +52,63 @@ const Bot = () => {
     fetchBot();
   }, [id]);
 
-  const getStatusColor = (status) => {
-    if (status === "active") return "rgba(0, 128, 0, 0.3)";
-    if (status === "inactive") return "rgba(255, 0, 0, 0.3)";
-    return "rgba(128,128,128,0.3)";
+  // ---------------- Conversion ----------------
+  const selectedCrypto = CRYPTO_MODES.find((m) => m.symbol === selectedMode);
+
+  const selectedConversion =
+    selectedCrypto && bot ? (bot.price / selectedCrypto.rate).toFixed(6) : 0;
+
+  // ---------------- Handle File Upload ----------------
+  const handleSelectProofs = (e) => {
+    const files = Array.from(e.target.files);
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+
+    setProofs(files);
+    setProofPreviews(previewUrls);
   };
 
-  // ---------------- UPDATE STATUS ----------------
-  const handleStatusChange = async () => {
-    if (!newStatus) return toast.error("Select a status");
+  // ---------------- Purchase Bot ----------------
+  const handlePurchase = async () => {
+    if (!selectedMode) return toast.error("Select payment mode");
+    if (proofs.length === 0) return toast.error("Upload payment proof");
 
-    setStatusLoading(true);
+    const formData = new FormData();
+    formData.append("amount", selectedConversion.toString());
+    formData.append("mode", selectedMode);
+    formData.append("botName", bot.name);
+    formData.append("dailyReturnPercent", bot.dailyReturnPercent);
+    formData.append("durationDays", bot.durationDays);
+    formData.append("maxReturnPercent", bot.maxReturnPercent);
+
+    proofs.forEach((file) => {
+      formData.append("images", file);
+    });
+
     try {
-      const res = await fetch(`${BASE_URL}/admin/bot/toggle-status/${id}`, {
-        method: "PATCH",
+      setPurchaseLoading(true);
+
+      const res = await fetch(`${BASE_URL}/bots/purchase`, {
+        method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ status: newStatus }),
+        body: formData,
       });
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success("Bot status updated");
-        setShowStatusModal(false);
-        fetchBot();
+        toast.success("Purchase successful!");
+        setShowPurchaseModal(false);
+        navigate("/dashboard");
+      } else {
+        toast.error(data.message || "Purchase failed");
       }
     } catch (err) {
-      console.error(err);
+      toast.error("Server error");
     } finally {
-      setStatusLoading(false);
+      setPurchaseLoading(false);
     }
-  };
-
-  // ---------------- DELETE BOT ----------------
-  const handleDeleteBot = async () => {
-    setDeleteLoading(true);
-    try {
-      const res = await fetch(`${BASE_URL}/admin/bot/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        toast.success("Bot deleted successfully");
-        navigate("/bots");
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDeleteLoading(false);
-    }
-  };
-
-  // ---------------- UPDATE BOT ----------------
-  const handleUpdateBot = async () => {
-    if (!updateData.name || !updateData.description)
-      return toast.error("All fields are required");
-
-    setUpdateLoading(true);
-    try {
-      const res = await fetch(`${BASE_URL}/admin/bot/update/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(updateData),
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        toast.success("Bot updated successfully");
-        setShowUpdateModal(false);
-        fetchBot();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUpdateLoading(false);
-    }
-  };
-
-  const handleUpdateChange = (e) => {
-    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
   };
 
   if (loading) {
@@ -175,6 +144,7 @@ const Bot = () => {
           <div className="bot-icon-container" style={{ height: "200px" }}>
             <FaRobot size={40} className="bot-icon" />
           </div>
+
           <div className="user-card-header">
             <h2>{bot.name}</h2>
           </div>
@@ -187,13 +157,7 @@ const Bot = () => {
 
             <div className="user-info">
               <span>Price:</span>
-              <span>
-                $
-                {bot.price.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
+              <span>${bot.price}</span>
             </div>
 
             <div className="user-info">
@@ -210,147 +174,123 @@ const Bot = () => {
               <span>Max Return:</span>
               <span>{bot.maxReturnPercent}%</span>
             </div>
-
-            <div className="user-info">
-              <span>Status:</span>
-              <span
-                style={{
-                  padding: "4px 8px",
-                  borderRadius: "10px",
-                  color: "white",
-                  display: "inline",
-                  backgroundColor: getStatusColor(bot.status),
-                }}
-              >
-                {bot.status.toUpperCase()}
-              </span>
-            </div>
-
-            <div className="user-info">
-              <span>Created:</span>
-              <span>
-                {new Date(bot.createdAt).toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </span>
-            </div>
           </div>
 
           <div className="user-card-actions">
             <button
               className="action-btn update-btn"
-              style={{ marginRight: "10px" }}
-              onClick={() => {
-                setUpdateData({ name: bot.name, description: bot.description });
-                setShowUpdateModal(true);
-              }}
+              onClick={() => setShowPurchaseModal(true)}
             >
-              UPDATE BOT
-            </button>
-
-            <button
-              className="action-btn update-btn"
-              style={{ marginRight: "10px" }}
-              onClick={() => {
-                setNewStatus(bot.status);
-                setShowStatusModal(true);
-              }}
-            >
-              UPDATE STATUS
-            </button>
-
-            <button
-              className="action-btn delete-btn"
-              onClick={() => setShowDeleteModal(true)}
-            >
-              DELETE
+              PURCHASE BOT 🤖
             </button>
           </div>
         </div>
       </div>
 
-      {/* ---------------- UPDATE BOT MODAL ---------------- */}
-      {showUpdateModal && (
+      {/* ---------------- PURCHASE MODAL ---------------- */}
+      {showPurchaseModal && (
         <div className="modal-backdrop">
-          <div className="modal">
-            <h3>Update Bot</h3>
+          <div className="modal" id="purchase-modal">
+            <h3>Purchase {bot.name}</h3>
 
+            <label>Bot Price</label>
             <input
               type="text"
-              name="name"
-              placeholder="Bot Name"
-              value={updateData.name}
-              onChange={handleUpdateChange}
+              value={`$${bot.price}`}
+              disabled
+              style={{ marginBottom: "15px" }}
             />
 
-            <textarea
-              name="description"
-              placeholder="Bot Description"
-              value={updateData.description}
-              onChange={handleUpdateChange}
-            />
+            <label>Select Payment Mode</label>
 
-            <div className="modal-actions">
-              <button onClick={handleUpdateBot} disabled={updateLoading}>
-                {updateLoading ? "Updating..." : "Update"}
-              </button>
-              <button
-                onClick={() => setShowUpdateModal(false)}
-                disabled={updateLoading}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ---------------- STATUS MODAL ---------------- */}
-      {showStatusModal && (
-        <div className="modal-backdrop">
-          <div className="modal">
-            <h3>Change Bot Status</h3>
-
-            <select
-              value={newStatus}
-              onChange={(e) => setNewStatus(e.target.value)}
+            <div
+              style={{
+                display: "flex",
+                overflowX: "auto",
+                marginBottom: "15px",
+              }}
             >
-              <option value="">Select Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-
-            <div className="modal-actions">
-              <button onClick={handleStatusChange} disabled={statusLoading}>
-                {statusLoading ? "Updating..." : "Update"}
-              </button>
-              <button
-                onClick={() => setShowStatusModal(false)}
-                disabled={statusLoading}
-              >
-                Cancel
-              </button>
+              {CRYPTO_MODES.map((mode) => (
+                <button
+                  key={mode.symbol}
+                  type="button"
+                  onClick={() => setSelectedMode(mode.symbol)}
+                  style={{
+                    padding: "8px 12px",
+                    marginRight: "8px",
+                    borderRadius: "8px",
+                    border: "none",
+                    cursor: "pointer",
+                    backgroundColor:
+                      selectedMode === mode.symbol ? "#38bdf8" : "#1f2937",
+                    color: selectedMode === mode.symbol ? "#020617" : "#f8fafc",
+                    fontWeight: "700",
+                  }}
+                >
+                  {mode.symbol.toUpperCase()}
+                </button>
+              ))}
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* ---------------- DELETE MODAL ---------------- */}
-      {showDeleteModal && (
-        <div className="modal-backdrop">
-          <div className="modal">
-            <h3>Are you sure?</h3>
-            <p>This action cannot be undone.</p>
+            {selectedMode && (
+              <p
+                style={{
+                  color: "#38bdf8",
+                  fontWeight: "600",
+                }}
+              >
+                ≈ {selectedConversion} {selectedMode.toUpperCase()}
+              </p>
+            )}
 
-            <div className="modal-actions">
-              <button onClick={handleDeleteBot} disabled={deleteLoading}>
-                {deleteLoading ? "Deleting..." : "Yes, Delete"}
-              </button>
+            <label>Upload Proof</label>
+            <input
+              type="file"
+              multiple
+              onChange={handleSelectProofs}
+              style={{ marginBottom: "15px" }}
+            />
+
+            {proofPreviews.map((uri, index) => (
+              <div
+                key={index}
+                style={{
+                  marginBottom: "12px",
+                  textAlign: "center",
+                }}
+              >
+                <img
+                  src={uri}
+                  alt="proof"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    borderRadius: "12px",
+                    border: "1px solid #38bdf8",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+            ))}
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+              }}
+            >
               <button
-                onClick={() => setShowDeleteModal(false)}
-                disabled={deleteLoading}
+                onClick={handlePurchase}
+                disabled={purchaseLoading}
+                className="btn update-btn"
+              >
+                {purchaseLoading ? "Processing..." : "Confirm"}
+              </button>
+
+              <button
+                onClick={() => setShowPurchaseModal(false)}
+                className="btn delete-btn"
               >
                 Cancel
               </button>

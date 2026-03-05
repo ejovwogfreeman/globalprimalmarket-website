@@ -4,29 +4,38 @@ import { toast } from "react-toastify";
 import "../App.css";
 import { BASE_URL } from "../data";
 
-export default function Verify() {
+export default function ChangePassword() {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = new URLSearchParams(location.search).get("email"); // email from query
+  const email = new URLSearchParams(location.search).get("email");
 
   const [loading, setLoading] = useState(false);
-  const [resending, setResending] = useState(false);
-  const [code, setCode] = useState(["", "", "", "", "", ""]); // six digits
+  const [resending, setResending] = useState(false); // ✅ FIXED
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [newPassword, setNewPassword] = useState("");
 
   const inputRefs = useRef([]);
 
-  // Focus first input on mount
+  // Focus first input
   useEffect(() => {
+    if (!email) {
+      toast.error("Email not found.");
+      navigate("/login");
+    }
     inputRefs.current[0]?.focus();
-  }, []);
+  }, [email, navigate]);
 
   const handleChange = (e, idx) => {
     const val = e.target.value;
-    if (!/^\d*$/.test(val)) return; // only digits
+    if (!/^\d*$/.test(val)) return;
+
     const newCode = [...code];
     newCode[idx] = val;
     setCode(newCode);
-    if (val && idx < 5) inputRefs.current[idx + 1]?.focus();
+
+    if (val && idx < 5) {
+      inputRefs.current[idx + 1]?.focus();
+    }
   };
 
   const handleKeyDown = (e, idx) => {
@@ -36,52 +45,59 @@ export default function Verify() {
   };
 
   const handlePaste = (e) => {
-    const pasted = e.clipboardData.getData("text").slice(0, 6).split("");
-    const newCode = [...code];
-    for (let i = 0; i < 6; i++) newCode[i] = pasted[i] || "";
+    const pasted = e.clipboardData.getData("text").slice(0, 6);
+    if (!/^\d+$/.test(pasted)) return;
+
+    const newCode = pasted.split("");
+    while (newCode.length < 6) newCode.push("");
     setCode(newCode);
-    const lastFilled = pasted.length - 1;
-    inputRefs.current[lastFilled]?.focus();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const otp = code.join("");
-    if (otp.length < 6) {
-      toast.error("Enter the 6-digit verification code.");
+
+    if (!email) {
+      toast.error("Email is missing.");
       return;
     }
 
-    setLoading(true);
+    const otp = code.join("");
+
+    if (otp.length !== 6) {
+      toast.error("Enter the complete 6-digit code.");
+      return;
+    }
+
+    if (!newPassword || newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
+
     try {
-      const res = await fetch(`${BASE_URL}/auth/verify`, {
+      setLoading(true);
+
+      const res = await fetch(`${BASE_URL}/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: otp }),
+        body: JSON.stringify({
+          email,
+          code: otp,
+          newPassword,
+        }),
       });
+
       const data = await res.json();
 
-      if (!data.success) {
-        // Already verified case
-        if (
-          data.message &&
-          data.message.toLowerCase().includes("already verified")
-        ) {
-          toast.info("Account already verified. Redirecting to login...");
-          setTimeout(() => navigate("/login"), 1000);
-          return;
-        }
-
-        toast.error(data.message || "Verification failed.");
+      if (!res.ok) {
+        toast.error(data.message || "Password change failed.");
         return;
       }
 
-      // Success case
-      toast.success("Verification successful!");
+      toast.success("Password changed successfully!");
       setTimeout(() => {
         navigate("/successful", {
           state: {
-            message: "Account verified successfully! You can now log in.",
+            message: "Password changed successfully! You can now log in.",
           },
         });
       }, 1000);
@@ -93,20 +109,25 @@ export default function Verify() {
     }
   };
 
-  // Resend OTP
   const handleResend = async () => {
-    setResending(true);
+    if (!email) return;
+
     try {
-      const res = await fetch(`${BASE_URL}/auth/resend-verification`, {
+      setResending(true);
+
+      const res = await fetch(`${BASE_URL}/auth/forget-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
+
       const data = await res.json();
-      if (!data.success) {
+
+      if (!res.ok) {
         toast.error(data.message || "Failed to resend code.");
         return;
       }
+
       toast.success("Verification code resent successfully!");
     } catch (err) {
       toast.error("Something went wrong. Try again.");
@@ -119,7 +140,7 @@ export default function Verify() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h2>✅ Verify Your Email</h2>
+        <h2>🔐 Reset Password</h2>
         <p>Enter the 6-digit code sent to {email}</p>
 
         <div className="otp-container">
@@ -138,8 +159,15 @@ export default function Verify() {
           ))}
         </div>
 
+        <input
+          type="password"
+          placeholder="Enter New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+
         <button type="submit" className="btn" disabled={loading}>
-          {loading ? "Verifying..." : "Verify"}
+          {loading ? "Updating..." : "Change Password"}
         </button>
 
         <div className="auth-footer">

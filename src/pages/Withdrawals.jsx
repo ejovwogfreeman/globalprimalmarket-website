@@ -18,7 +18,7 @@ const Withdrawals = () => {
     const fetchTransactions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${BASE_URL}/admin/all-transactions`, {
+        const res = await fetch(`${BASE_URL}/transactions/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch transactions");
@@ -111,7 +111,13 @@ const Withdrawals = () => {
       <Navbar />
 
       <div className="container">
-        <h2>All Withdrawals</h2>
+        {/* <h2>All Withdrawals</h2> */}
+        <div className="admin-bot" style={{ marginBottom: "20px" }}>
+          <h2>All Withdrawals</h2>
+          <Link to="/withdraw-funds" id="btn" className="btn btn-primary">
+            WITHDRAW FUNDS
+          </Link>
+        </div>
 
         {/* Search input */}
         <input
@@ -142,7 +148,6 @@ const Withdrawals = () => {
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>User Email</th>
                 <th>Amount</th>
                 <th>Type</th>
                 <th>Status</th>
@@ -164,11 +169,10 @@ const Withdrawals = () => {
                 currentTransactions.map((tx, index) => (
                   <tr key={tx._id}>
                     <td data-label="S/N">{indexOfFirstTx + index + 1}</td>
-                    <td data-label="User Email">{tx.user.email}</td>
                     <td data-label="Amount">
                       {Number(tx.amount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 5,
+                        maximumFractionDigits: 5,
                       })}
                       <span
                         style={{

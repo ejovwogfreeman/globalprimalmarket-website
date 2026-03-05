@@ -80,7 +80,7 @@ const Login = () => {
         />
 
         <button type="submit" className="btn" disabled={loading}>
-          {loading ? "LOADING..." : "Login"}
+          {loading ? "Loading..." : "Login"}
         </button>
 
         {/* LOGIN LINK */}
@@ -91,6 +91,9 @@ const Login = () => {
               Register
             </a>
           </p>
+          <a href="/forgot-password" className="auth-link">
+            Forgot Password
+          </a>
         </div>
       </form>
     </div>

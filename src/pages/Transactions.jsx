@@ -17,7 +17,7 @@ const Transactions = () => {
     const fetchTransactions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${BASE_URL}/admin/all-transactions`, {
+        const res = await fetch(`${BASE_URL}/transactions/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch transactions");
@@ -34,6 +34,8 @@ const Transactions = () => {
     };
     fetchTransactions();
   }, []);
+
+  console.log(transactions);
 
   // Handle search (email, type, status)
   const handleSearch = (e) => {
@@ -136,7 +138,6 @@ const Transactions = () => {
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>User Email</th>
                 <th>Amount</th>
                 <th>Type</th>
                 <th>Status</th>
@@ -158,11 +159,10 @@ const Transactions = () => {
                 currentTransactions.map((tx, index) => (
                   <tr key={tx._id}>
                     <td data-label="S/N">{indexOfFirstTx + index + 1}</td>
-                    <td data-label="User Email">{tx.user.email}</td>
                     <td data-label="Amount">
                       {Number(tx.amount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 5,
+                        maximumFractionDigits: 5,
                       })}
                       <span
                         style={{

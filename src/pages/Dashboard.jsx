@@ -7,30 +7,43 @@ import {
   FaWallet,
   FaArrowDown,
   FaRobot,
+  FaChevronDown,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../data";
 
 const Dashboard = () => {
+  const [user, setUser] = useState(null);
   const [userName, setUserName] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [bots, setBots] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [selectedCoin, setSelectedCoin] = useState("btc");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-
         const headers = { Authorization: `Bearer ${token}` };
 
         // Fetch logged-in user info
         const profileRes = await fetch(`${BASE_URL}/user/me`, { headers });
         const profileData = await profileRes.json();
-        console.log(profileData);
-        if (profileData.user?.userName) {
-          setUserName(profileData.user.userName);
+
+        if (profileData.user) {
+          setUser(profileData.user);
+          setUserName(profileData.user.userName || "");
+
+          // Automatically select first available coin
+          if (profileData.user.balance) {
+            const coins = Object.keys(profileData.user.balance);
+            if (coins.length > 0) {
+              setSelectedCoin(coins[0]);
+            }
+          }
         }
 
         // Fetch transactions
@@ -66,13 +79,13 @@ const Dashboard = () => {
 
   // Filter transactions by type
   const deposits = transactions.filter(
-    (t) => t.type.toLowerCase() === "deposit",
+    (t) => t.type?.toLowerCase() === "deposit",
   );
   const investments = transactions.filter(
-    (t) => t.type.toLowerCase() === "investment",
+    (t) => t.type?.toLowerCase() === "investment",
   );
   const withdrawals = transactions.filter(
-    (t) => t.type.toLowerCase() === "withdrawal",
+    (t) => t.type?.toLowerCase() === "withdrawal",
   );
 
   const currentTime = new Date();
@@ -93,22 +106,86 @@ const Dashboard = () => {
       <div className="container">
         <div className="admin-bot">
           <h2>Your Dashboard</h2>
-          <Link to="/create-bot" id="btn" className="btn btn-primary">
-            CREATE BOT 🤖
+          <Link to="/bots" id="btn" className="btn btn-primary">
+            PURCHASE BOT 🤖
           </Link>
         </div>
 
         <div style={{ color: "#fff", marginBottom: "30px" }}>
-          <p style={{ marginBottom: "5px" }}>
-            Welcome back, {userName || "User"} 👋
-          </p>
-          <p style={{ marginBottom: "5px" }}>
-            Current Date & Time: {formattedDateTime}
-          </p>
+          <p>Welcome back, {userName || "User"} 👋</p>
+          <p>Current Date & Time: {formattedDateTime}</p>
         </div>
 
+        {/* ✅ Balance Card */}
+        {user?.balance && (
+          <div className="balance-card">
+            <div
+              className="balance-header"
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              <h3
+                style={{
+                  textTransform: "uppercase",
+                  margin: 0,
+                  color: "#38BDF8",
+                }}
+              >
+                {selectedCoin} Balance
+              </h3>
+
+              <FaChevronDown
+                style={{
+                  transform: showDropdown ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "0.3s",
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <h1 className="balance-amount">
+                {user.balance[selectedCoin]?.toLocaleString() ?? 0}
+              </h1>
+              <h3
+                style={{
+                  textTransform: "uppercase",
+                  marginLeft: "5px",
+                  color: "#757C86",
+                }}
+              >
+                {selectedCoin}
+              </h3>
+            </div>
+            <p
+              style={{
+                textTransform: "uppercase",
+                marginLeft: "7px",
+                color: "#757C86",
+                textAlign: "right",
+                margin: "0px",
+              }}
+            >
+              Global Primal Wallet
+            </p>
+
+            {showDropdown && (
+              <div className="balance-dropdown">
+                {Object.keys(user.balance).map((coin) => (
+                  <div
+                    key={coin}
+                    className="dropdown-item"
+                    onClick={() => {
+                      setSelectedCoin(coin);
+                      setShowDropdown(false);
+                    }}
+                  >
+                    {coin.toUpperCase()}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="dashboard-grid">
-          {/* Transactions Card */}
           <div className="dashboard-card">
             <FaExchangeAlt className="card-icon" />
             <h3>Transactions</h3>
@@ -118,7 +195,6 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          {/* Deposits Card */}
           <div className="dashboard-card">
             <FaMoneyBillWave className="card-icon" />
             <h3>Deposits</h3>
@@ -128,7 +204,6 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          {/* Investments Card */}
           <div className="dashboard-card">
             <FaWallet className="card-icon" />
             <h3>Investments</h3>
@@ -138,7 +213,6 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          {/* Withdrawals Card */}
           <div className="dashboard-card">
             <FaArrowDown className="card-icon" />
             <h3>Withdrawals</h3>
@@ -148,7 +222,6 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          {/* Bots Card */}
           <div className="dashboard-card">
             <FaRobot className="card-icon" />
             <h3>Bots</h3>

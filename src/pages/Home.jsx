@@ -63,8 +63,8 @@ export default function Home() {
 
   const formatCurrency = (num) =>
     new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 5,
+      maximumFractionDigits: 5,
     }).format(num);
 
   return (

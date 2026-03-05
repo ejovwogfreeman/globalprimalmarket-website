@@ -12,17 +12,11 @@ const Transaction = () => {
   const [transaction, setTransaction] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ------------------ Modal states ------------------
-  const [showStatusModal, setShowStatusModal] = useState(false);
-  const [statusLoading, setStatusLoading] = useState(false);
-  const [newStatus, setNewStatus] = useState("");
-
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [countdown, setCountdown] = useState("Pending");
 
   const fetchTransaction = async () => {
     try {
-      const res = await fetch(`${BASE_URL}/admin/transaction/${id}`, {
+      const res = await fetch(`${BASE_URL}/transactions/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -30,7 +24,7 @@ const Transaction = () => {
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      setTransaction(data.transaction);
+      setTransaction(data.transaction); // <-- fix here
     } catch (error) {
       console.error("Error fetching transaction:", error);
     } finally {
@@ -41,6 +35,29 @@ const Transaction = () => {
   useEffect(() => {
     fetchTransaction();
   }, [id]);
+
+  // ------------------ Countdown logic ------------------
+  useEffect(() => {
+    if (transaction?.maturityDate) {
+      const interval = setInterval(() => {
+        const now = new Date();
+        const maturity = new Date(transaction.maturityDate);
+        const diff = maturity - now;
+
+        if (diff <= 0) {
+          setCountdown("Matured");
+          clearInterval(interval);
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / 1000 / 60) % 60);
+          setCountdown(`${days}d ${hours}h ${minutes}m`);
+        }
+      }, 60000); // update every minute
+
+      return () => clearInterval(interval);
+    }
+  }, [transaction]);
 
   if (loading) {
     return (
@@ -61,6 +78,16 @@ const Transaction = () => {
       </div>
     );
   }
+
+  const isInvestment =
+    transaction?.type === "investment" || transaction?.type === "bot purchase";
+
+  const durationDays = transaction?.durationDays ?? 60;
+
+  const dailyReturnPercent =
+    transaction?.dailyReturnPercent ?? Number((100 / durationDays).toFixed(3));
+
+  const maxReturnPercent = transaction?.maxReturnPercent ?? 100;
 
   // ------------------ Helpers ------------------
   const getTypeColor = (type) => {
@@ -92,57 +119,6 @@ const Transaction = () => {
     }
   };
 
-  // ------------------ Handlers ------------------
-  const handleStatusChange = async () => {
-    if (!newStatus) return toast.error("Please select a status");
-    setStatusLoading(true);
-    try {
-      const res = await fetch(`${BASE_URL}/admin/transaction/update/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Status changed successfully");
-        setShowStatusModal(false); // close modal
-        setNewStatus(""); // reset selection
-        await fetchTransaction();
-      } else {
-        console.error(data.message || "Failed to update status");
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setStatusLoading(false);
-    }
-  };
-
-  const handleDeleteTransaction = async () => {
-    setDeleteLoading(true);
-    try {
-      const res = await fetch(`${BASE_URL}/admin/transaction/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Transaction deleted successfully");
-        setShowDeleteModal(false);
-        navigate("/transactions");
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDeleteLoading(false);
-    }
-  };
-
   return (
     <>
       <Navbar />
@@ -156,12 +132,11 @@ const Transaction = () => {
           <div className="user-card-header">
             <h2>Transaction Detail</h2>
           </div>
-
           <div className="user-card-body">
-            {transaction.proof?.[0] ? (
+            {transaction.proof?.[0] && (
               <div className="user-info">
                 <span>Proof:</span>
-                <a href={transaction.proof[0]} target="_blank">
+                <a href={transaction.proof[0]} target="_blank" rel="noreferrer">
                   <img
                     src={transaction.proof[0]}
                     alt={transaction._id}
@@ -169,8 +144,6 @@ const Transaction = () => {
                   />
                 </a>
               </div>
-            ) : (
-              ""
             )}
 
             <div className="user-info">
@@ -182,11 +155,11 @@ const Transaction = () => {
             <div className="user-info">
               <span>Amount:</span>{" "}
               <div style={{ display: "flex", alignItems: "baseline" }}>
-                <span style={{ margin: "0px" }}>
+                <span>
                   {Number(transaction.amount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
+                    minimumFractionDigits: 5,
+                    maximumFractionDigits: 5,
+                  })}
                 </span>
                 <span
                   style={{
@@ -245,80 +218,57 @@ const Transaction = () => {
             </div>
           </div>
 
-          <div className="user-card-actions">
-            <button
-              className="action-btn update-btn"
-              style={{ marginRight: "10px" }}
-              onClick={() => {
-                setNewStatus(transaction.status); // ✅ set current transaction status as default
-                setShowStatusModal(true); // open modal
-              }}
-            >
-              UPDATE
-            </button>
-            <button
-              className="action-btn delete-btn"
-              onClick={() => setShowDeleteModal(true)}
-            >
-              DELETE
-            </button>
-          </div>
+          {/* ------------------ INVESTMENT DETAILS ------------------ */}
+          {isInvestment && (
+            <div style={{ textAlign: "left" }}>
+              <div className="user-info">
+                <span>
+                  {transaction.type === "bot purchase" ? "Bot Name" : "Plan"}:
+                </span>
+                <span>{transaction.plan ?? "N/A"}</span>
+              </div>
+
+              <div className="user-info">
+                <span>Daily Return (%):</span>
+                <span>{dailyReturnPercent}%</span>
+              </div>
+
+              <div className="user-info">
+                <span>Duration (Days):</span> <span>{durationDays} Days</span>
+              </div>
+
+              <div className="user-info">
+                <span>Max Return (%):</span> <span>{maxReturnPercent}%</span>
+              </div>
+
+              <div className="user-info">
+                <span>Countdown:</span> <span>{countdown}</span>
+              </div>
+
+              {countdown === "Matured" && (
+                <button
+                  style={{
+                    padding: "12px 20px",
+                    borderRadius: "10px",
+                    backgroundColor: "#38bdf8",
+                    color: "#020617",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                  onClick={() => {
+                    toast.success("Your bonus has been successfully claimed!");
+                    // TODO: call backend API to mark bonus as claimed
+                    navigate("/dashboard");
+                  }}
+                >
+                  Claim Bonus
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
-
-      {/* ------------------ STATUS MODAL ------------------ */}
-      {showStatusModal && (
-        <div className="modal-backdrop">
-          <div className="modal">
-            <h3>Change Transaction Status</h3>
-            <select
-              value={newStatus}
-              onChange={(e) => setNewStatus(e.target.value)}
-            >
-              <option value="">Select Status</option>
-              <option value="pending">Pending</option>
-              <option value="in progress">In Progress</option>
-              <option value="approved">Approved</option>
-              <option value="declined">Declined</option>
-            </select>
-            <div className="modal-actions">
-              <button onClick={handleStatusChange} disabled={statusLoading}>
-                {statusLoading ? "Updating..." : "Update"}
-              </button>
-              <button
-                onClick={() => setShowStatusModal(false)}
-                disabled={statusLoading}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ------------------ DELETE MODAL ------------------ */}
-      {showDeleteModal && (
-        <div className="modal-backdrop">
-          <div className="modal">
-            <h3>Are you sure?</h3>
-            <p>This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button
-                onClick={handleDeleteTransaction}
-                disabled={deleteLoading}
-              >
-                {deleteLoading ? "Deleting..." : "Yes, Delete"}
-              </button>
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                disabled={deleteLoading}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </>

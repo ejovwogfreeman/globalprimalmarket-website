@@ -562,6 +562,17 @@ footer {
   animation: fadeIn 0.3s ease;
 }
 
+#purchase-modal {
+  max-width: 700px !important;
+}
+
+@media screen and (max-width: 600px) {
+  #purchase-modal {
+    max-width: 95% !important;
+    padding: 20px;
+  }
+}
+
 /* Modal heading */
 .modal h3 {
   margin-top: 0;
@@ -768,5 +779,79 @@ footer {
     grid-template-columns: repeat(2, 1fr); /* 3 per row */
     gap: 10px;
     margin-top: 8px;
+  }
+}
+
+.balance-card {
+  background: #0f172a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  position: relative;
+  max-width: 400px;
+}
+
+.balance-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.balance-amount {
+  font-size: 32px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.balance-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #1e293b;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #334155;
+}
+
+.pencil-icon {
+  position: absolute;
+  left: 250px;
+  bottom: 90px;
+  cursor: pointer;
+  background: white;
+  border-radius: 10px;
+  padding: 4px;
+  color: #1e293b;
+  font-size: 25px;
+  border: 3px solid #1e293b;
+}
+
+@media screen and (max-width: 500px) {
+  .pencil-icon {
+    position: absolute;
+    left: 60%;
+    bottom: 90px;
+    cursor: pointer;
+    background: white;
+    border-radius: 10px;
+    padding: 4px;
+    color: #1e293b;
+    font-size: 25px;
+    border: 3px solid #1e293b;
   }
 }

@@ -18,7 +18,7 @@ const Bots = () => {
     const fetchBots = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${BASE_URL}/admin/all-bots`, {
+        const res = await fetch(`${BASE_URL}/bots`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -80,9 +80,9 @@ const Bots = () => {
       <div className="container">
         <div className="admin-bot" style={{ marginBottom: "20px" }}>
           <h2>Available Bots</h2>
-          <Link to="/create-bot" id="btn" className="btn btn-primary">
+          {/* <Link to="/create-bot" id="btn" className="btn btn-primary">
             CREATE BOT 🤖
-          </Link>
+          </Link> */}
         </div>
 
         {/* Search input */}
