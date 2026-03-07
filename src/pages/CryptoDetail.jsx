@@ -94,10 +94,7 @@ export default function CryptoDetail() {
   return (
     <div className="crypto-container">
       <Navbar />
-      <div
-        className="crypto-content container"
-        style={{ paddingBottom: "100px" }}
-      >
+      <div className="crypto-content container">
         {/* Back Button */}
         <Link className="back-btn" to="/crypto">
           &larr; Back to Crypto
@@ -153,6 +150,11 @@ export default function CryptoDetail() {
             />
           </div>
         )}
+        <div style={{ marginTop: "100px" }}>
+          <Link className="back-btn" to="/investment-plans">
+            Invest Now
+          </Link>
+        </div>
       </div>
       <Footer />
     </div>

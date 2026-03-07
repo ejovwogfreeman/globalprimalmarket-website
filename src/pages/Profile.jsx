@@ -135,7 +135,7 @@ const Profile = () => {
     return (
       <div className="spinner-wrapper">
         <div className="spinner"></div>
-        <p>Loading user...</p>
+        <p>Loading profile...</p>
       </div>
     );
   }

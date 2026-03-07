@@ -47,7 +47,7 @@ const Login = () => {
 
       // ✅ Check if admin
 
-      toast.success("Admin Login Successful!");
+      toast.success("Login Successful!");
 
       // Optional: store token
       localStorage.setItem("token", data.token);
