@@ -46,6 +46,7 @@ function App() {
         <Route path="/successful" element={<Successful />} />
         <Route path="/crypto" element={<Crypto />} />
         <Route path="/crypto/:id" element={<CryptoDetail />} />
+        <Route path="/investment-plans" element={<InvestPlans />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"
@@ -127,14 +128,14 @@ function App() {
             </CheckAuth>
           }
         />
-        <Route
+        {/* <Route
           path="/investment-plans"
           element={
             <CheckAuth>
               <InvestPlans />
             </CheckAuth>
           }
-        />
+        /> */}
         <Route
           path="/invest-funds"
           element={
