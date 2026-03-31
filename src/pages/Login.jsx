@@ -91,15 +91,15 @@ const Login = () => {
               Register
             </a>
           </p>
-          <a>
-            {" "}
+          <p>
             <a href="/" className="auth-link">
               Home
             </a>
+            &nbsp; | &nbsp;
             <a href="/forgot-password" className="auth-link">
               Forgot Password
             </a>
-          </a>
+          </p>
         </div>
       </form>
     </div>
