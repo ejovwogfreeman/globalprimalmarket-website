@@ -269,7 +269,7 @@ export default function Home() {
           <div className="contactInfo">
             <p>
               <FaEnvelope className="icon" /> <strong>Email:</strong>
-              &nbsp;support@globalprimalmarket.com
+              &nbsp;support@globatrixprime.com
             </p>
             <p>
               <FaPhoneAlt className="icon" /> <strong>Phone:</strong>&nbsp;+1
