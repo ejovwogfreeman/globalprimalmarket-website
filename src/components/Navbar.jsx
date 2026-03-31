@@ -52,7 +52,11 @@ const Navbar = () => {
           onClick={() => setMenuOpen(false)}
           smooth
           scroll={(el) =>
-            el.scrollIntoView({ behavior: "smooth", block: "start" })
+            // Wait a tick to ensure element exists
+            setTimeout(
+              () => el.scrollIntoView({ behavior: "smooth", block: "start" }),
+              50,
+            )
           }
         >
           <FaInfoCircle style={{ marginRight: 5 }} /> About
@@ -62,7 +66,11 @@ const Navbar = () => {
           onClick={() => setMenuOpen(false)}
           smooth
           scroll={(el) =>
-            el.scrollIntoView({ behavior: "smooth", block: "start" })
+            // Wait a tick to ensure element exists
+            setTimeout(
+              () => el.scrollIntoView({ behavior: "smooth", block: "start" }),
+              50,
+            )
           }
         >
           <FaQuestionCircle style={{ marginRight: 5 }} /> FAQ

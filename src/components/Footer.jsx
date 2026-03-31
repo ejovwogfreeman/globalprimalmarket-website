@@ -27,7 +27,12 @@ const Footer = () => {
                 to="/#about"
                 smooth
                 scroll={(el) =>
-                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                  // Wait a tick to ensure element exists
+                  setTimeout(
+                    () =>
+                      el.scrollIntoView({ behavior: "smooth", block: "start" }),
+                    50,
+                  )
                 }
               >
                 About
@@ -38,7 +43,12 @@ const Footer = () => {
                 to="/#services"
                 smooth
                 scroll={(el) =>
-                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                  // Wait a tick to ensure element exists
+                  setTimeout(
+                    () =>
+                      el.scrollIntoView({ behavior: "smooth", block: "start" }),
+                    50,
+                  )
                 }
               >
                 Services
@@ -49,7 +59,12 @@ const Footer = () => {
                 to="/#market"
                 smooth
                 scroll={(el) =>
-                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                  // Wait a tick to ensure element exists
+                  setTimeout(
+                    () =>
+                      el.scrollIntoView({ behavior: "smooth", block: "start" }),
+                    50,
+                  )
                 }
               >
                 Market
@@ -60,7 +75,12 @@ const Footer = () => {
                 to="/#contact"
                 smooth
                 scroll={(el) =>
-                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                  // Wait a tick to ensure element exists
+                  setTimeout(
+                    () =>
+                      el.scrollIntoView({ behavior: "smooth", block: "start" }),
+                    50,
+                  )
                 }
               >
                 Contact
