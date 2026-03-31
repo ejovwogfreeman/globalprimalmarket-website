@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../App.css";
 import { BASE_URL } from "../data";
@@ -91,8 +91,14 @@ const Login = () => {
               Register
             </a>
           </p>
-          <a href="/forgot-password" className="auth-link">
-            Forgot Password
+          <a>
+            {" "}
+            <a href="/" className="auth-link">
+              Home
+            </a>
+            <a href="/forgot-password" className="auth-link">
+              Forgot Password
+            </a>
           </a>
         </div>
       </form>
