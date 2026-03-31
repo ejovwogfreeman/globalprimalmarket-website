@@ -128,14 +128,6 @@ function App() {
             </CheckAuth>
           }
         />
-        {/* <Route
-          path="/investment-plans"
-          element={
-            <CheckAuth>
-              <InvestPlans />
-            </CheckAuth>
-          }
-        /> */}
         <Route
           path="/invest-funds"
           element={

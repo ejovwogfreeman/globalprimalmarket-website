@@ -1,5 +1,6 @@
 import { FaTwitter, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import "../css/Footer.css";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -19,19 +20,19 @@ const Footer = () => {
           <h4>Quick Links</h4>
           <ul>
             <li>
-              <a href="">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="http://localhost:5173/#about">About</a>
+              <Link to="/#about">About</Link>
             </li>
             <li>
-              <a href="http://localhost:5173/#services">Services</a>
+              <Link to="/#services">Services</Link>
             </li>
             <li>
-              <a href="http://localhost:5173/#market">Market</a>
+              <Link to="/#market">Market</Link>
             </li>
             <li>
-              <a href="http://localhost:5173/#contact">Contact</a>
+              <Link to="/#contact">Contact</Link>
             </li>
           </ul>
         </div>
