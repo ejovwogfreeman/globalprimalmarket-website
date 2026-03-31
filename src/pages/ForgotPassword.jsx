@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../App.css";
 import { BASE_URL } from "../data";
@@ -65,9 +65,9 @@ const ForgotPassword = () => {
         <div className="auth-footer">
           <p>
             Remember your password?{" "}
-            <a href="/login" className="auth-link">
+            <Link to="/login" className="auth-link">
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </form>

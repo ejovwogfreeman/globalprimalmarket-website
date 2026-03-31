@@ -87,18 +87,18 @@ const Login = () => {
         <div className="auth-footer">
           <p>
             New Here?{" "}
-            <a href="/register" className="auth-link">
+            <Link to="/register" className="auth-link">
               Register
-            </a>
+            </Link>
           </p>
           <p>
-            <a href="/" className="auth-link">
+            <Link to="/" className="auth-link">
               Home
-            </a>
+            </Link>
             &nbsp;|&nbsp;
-            <a href="/forgot-password" className="auth-link">
+            <Link to="/forgot-password" className="auth-link">
               Forgot Password
-            </a>
+            </Link>
           </p>
         </div>
       </form>

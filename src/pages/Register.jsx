@@ -2,6 +2,7 @@ import { useState } from "react";
 import { COUNTRIES, BASE_URL } from "../data";
 import { toast } from "react-toastify";
 import { IoCloseCircle } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [step, setStep] = useState(1);
@@ -303,9 +304,9 @@ export default function Register() {
         <div className="auth-footer">
           <p>
             Already have an account?{" "}
-            <a href="/login" className="auth-link">
+            <Link to="/login" className="auth-link">
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </form>
