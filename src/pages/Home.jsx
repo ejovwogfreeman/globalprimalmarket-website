@@ -269,15 +269,15 @@ export default function Home() {
           <div className="contactInfo">
             <p>
               <FaEnvelope className="icon" /> <strong>Email:</strong>
-              support@globalprimalmarket.com
+              &nbsp;support@globalprimalmarket.com
             </p>
             <p>
-              <FaPhoneAlt className="icon" /> <strong>Phone:</strong> +1 (555)
-              123-4567
+              <FaPhoneAlt className="icon" /> <strong>Phone:</strong>&nbsp;+1
+              904 310 2851
             </p>
             <p>
-              <FaMapMarkerAlt className="icon" /> <strong>Address:</strong> 123
-              Blockchain Avenue, Crypto City, USA
+              <FaMapMarkerAlt className="icon" /> <strong>Address:</strong>
+              &nbsp;2441 Old Cypress Creek Rd
             </p>
           </div>
 
