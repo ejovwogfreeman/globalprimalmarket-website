@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import "../css/Home.css";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [market, setMarket] = useState([]);
@@ -66,6 +66,22 @@ export default function Home() {
       minimumFractionDigits: 5,
       maximumFractionDigits: 5,
     }).format(num);
+
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleClick = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
+  };
 
   return (
     <>
@@ -214,7 +230,9 @@ export default function Home() {
       <section className="cta">
         <h2>Start Investing Today</h2>
         <p>Join thousands of traders growing their wealth daily.</p>
-        <button>Create Free Account</button>
+        <button onClick={handleClick}>
+          {isAuthenticated ? "Visit Dashboard" : "Create Free Account"}
+        </button>
       </section>
 
       {/* ================= FAQ ================= */}

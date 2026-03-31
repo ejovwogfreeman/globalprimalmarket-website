@@ -23,22 +23,46 @@ const Footer = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link smooth to="/#about">
+              <Link
+                to="/#about"
+                smooth
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
                 About
               </Link>
             </li>
             <li>
-              <Link smooth to="/#services">
+              <Link
+                to="/#services"
+                smooth
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
                 Services
               </Link>
             </li>
             <li>
-              <Link smooth to="/#market">
+              <Link
+                to="/#market"
+                smooth
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
                 Market
               </Link>
             </li>
             <li>
-              <Link smooth to="/#contact">
+              <Link
+                to="/#contact"
+                smooth
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
                 Contact
               </Link>
             </li>

@@ -47,10 +47,24 @@ const Navbar = () => {
         <Link to="/" onClick={() => setMenuOpen(false)}>
           <FaHome style={{ marginRight: 5 }} /> Home
         </Link>
-        <Link smooth to="/#about" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/#about"
+          onClick={() => setMenuOpen(false)}
+          smooth
+          scroll={(el) =>
+            el.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+        >
           <FaInfoCircle style={{ marginRight: 5 }} /> About
         </Link>
-        <Link smooth to="/#faq" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/#faq"
+          onClick={() => setMenuOpen(false)}
+          smooth
+          scroll={(el) =>
+            el.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+        >
           <FaQuestionCircle style={{ marginRight: 5 }} /> FAQ
         </Link>
 
