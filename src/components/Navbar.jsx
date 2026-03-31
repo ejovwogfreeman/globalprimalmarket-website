@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaTimes,
@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import { toast } from "react-toastify";
+import { HashLink as Link } from "react-router-hash-link";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,15 +47,12 @@ const Navbar = () => {
         <Link to="/" onClick={() => setMenuOpen(false)}>
           <FaHome style={{ marginRight: 5 }} /> Home
         </Link>
-        <a
-          href="http://localhost:5173/#about"
-          onClick={() => setMenuOpen(false)}
-        >
+        <Link smooth to="/#about" onClick={() => setMenuOpen(false)}>
           <FaInfoCircle style={{ marginRight: 5 }} /> About
-        </a>
-        <a href="http://localhost:5173/#faq" onClick={() => setMenuOpen(false)}>
+        </Link>
+        <Link smooth to="/#faq" onClick={() => setMenuOpen(false)}>
           <FaQuestionCircle style={{ marginRight: 5 }} /> FAQ
-        </a>
+        </Link>
 
         {/* Unauthenticated links */}
         {!isAuthenticated && (

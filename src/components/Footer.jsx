@@ -1,6 +1,6 @@
 import { FaTwitter, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import "../css/Footer.css";
-import { Link } from "react-router-dom";
+import { HashLink as Link } from "react-router-hash-link";
 
 const Footer = () => {
   return (
@@ -23,16 +23,24 @@ const Footer = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/#about">About</Link>
+              <Link smooth to="/#about">
+                About
+              </Link>
             </li>
             <li>
-              <Link to="/#services">Services</Link>
+              <Link smooth to="/#services">
+                Services
+              </Link>
             </li>
             <li>
-              <Link to="/#market">Market</Link>
+              <Link smooth to="/#market">
+                Market
+              </Link>
             </li>
             <li>
-              <Link to="/#contact">Contact</Link>
+              <Link smooth to="/#contact">
+                Contact
+              </Link>
             </li>
           </ul>
         </div>
