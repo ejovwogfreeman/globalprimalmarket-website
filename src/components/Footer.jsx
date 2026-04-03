@@ -1,6 +1,12 @@
-import { FaTwitter, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
+// import { FaTwitter, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import "../css/Footer.css";
 import { HashLink as Link } from "react-router-hash-link";
+import {
+  FaEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaRobot,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -13,6 +19,19 @@ const Footer = () => {
             Secure crypto trading platform. Grow your digital assets with smart
             investment tools and real-time market insights.
           </p>
+          <a
+            href="https://yourdomain.com/app.apk" // replace with your real APK link
+            download
+            className="btn"
+            style={{
+              display: "inline-block",
+              textDecoration: "none",
+              marginTop: "20px",
+            }}
+          >
+            <FaRobot style={{ marginRight: "10px", marginBottom: "-3px" }} />
+            Download Mobile App (APK)
+          </a>
         </div>
 
         {/* Quick Links */}
@@ -86,11 +105,14 @@ const Footer = () => {
                 Contact
               </Link>
             </li>
+            <li>
+              <Link to="/privacy-policy">Privacy Policy</Link>
+            </li>
           </ul>
         </div>
 
         {/* Social Media */}
-        <div className="footer-section">
+        {/* <div className="footer-section">
           <h4>Follow Us</h4>
           <div className="footer-social">
             <a href="https://twitter.com" target="_blank" rel="noreferrer">
@@ -102,6 +124,26 @@ const Footer = () => {
             <a href="https://t.me" target="_blank" rel="noreferrer">
               <FaTelegramPlane />
             </a>
+          </div>
+        </div> */}
+        <div className="footer-section">
+          <h4>Contact Us</h4>
+          <div className="contactContainer">
+            {/* Contact Info */}
+            <div className="contactInfo">
+              <p>
+                <FaEnvelope className="icon" /> <strong>Email:</strong>
+                &nbsp;support@globatrixprime.com
+              </p>
+              <p>
+                <FaPhoneAlt className="icon" /> <strong>Phone:</strong>&nbsp;+1
+                904 310 2851
+              </p>
+              <p>
+                <FaMapMarkerAlt className="icon" /> <strong>Address:</strong>
+                &nbsp;2441 Old Cypress Creek Rd
+              </p>
+            </div>
           </div>
         </div>
       </div>

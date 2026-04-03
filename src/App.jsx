@@ -27,6 +27,7 @@ import DepositFunds from "./pages/DepositFunds";
 import InvestFunds from "./pages/InvestFunds";
 import InvestPlans from "./pages/InvestPlans";
 import WithdrawFunds from "./pages/WithdrawFunds";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/crypto" element={<Crypto />} />
         <Route path="/crypto/:id" element={<CryptoDetail />} />
         <Route path="/investment-plans" element={<InvestPlans />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"

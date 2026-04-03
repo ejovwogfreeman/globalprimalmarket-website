@@ -9,7 +9,12 @@ import {
   IoBarChartOutline,
 } from "react-icons/io5";
 import "../css/Home.css";
-import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaRobot,
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -118,6 +123,20 @@ export default function Home() {
           for both beginners and professionals. Real-time data, automated
           trading tools, and advanced portfolio management in one place.
         </p>
+
+        <a
+          href="https://yourdomain.com/app.apk" // replace with your real APK link
+          download
+          className="btn"
+          style={{
+            display: "inline-block",
+            textDecoration: "none",
+            marginTop: "20px",
+          }}
+        >
+          <FaRobot style={{ marginRight: "10px", marginBottom: "-3px" }} />
+          Download Mobile App (APK)
+        </a>
       </section>
 
       {/* ================= FEATURES ================= */}
