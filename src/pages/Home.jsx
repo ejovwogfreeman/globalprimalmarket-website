@@ -125,7 +125,7 @@ export default function Home() {
         </p>
 
         <a
-          href="https://yourdomain.com/app.apk" // replace with your real APK link
+          href="https://app.globatrixprime/download/globatrixprime.apk" // replace with your real APK link
           download
           className="btn"
           style={{
