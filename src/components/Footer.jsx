@@ -20,7 +20,7 @@ const Footer = () => {
             investment tools and real-time market insights.
           </p>
           <a
-            href="https://app.globatrixprime/download/globatrixprime.apk" // replace with your real APK link
+            href="https://app.globatrixprime.com/download/globatrixprime.apk" // replace with your real APK link
             download
             className="btn"
             style={{
