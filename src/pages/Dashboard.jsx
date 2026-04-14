@@ -42,7 +42,7 @@ const Dashboard = () => {
           if (profileData.user.balance) {
             const coins = Object.keys(profileData.user.balance);
             if (coins.length > 0) {
-              setSelectedCoin(coins[0]);
+              setSelectedCoin("usdt");
             }
           }
         }
