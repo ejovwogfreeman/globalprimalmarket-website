@@ -195,7 +195,7 @@ const Dashboard = () => {
                       fontSize: "14px",
                     }}
                   >
-                    ≈ {totalUSDT.toLocaleString()} USDT
+                    ≈ {usdtValue.toLocaleString()} USDT
                   </p>
 
                   {/* FOOTER */}
