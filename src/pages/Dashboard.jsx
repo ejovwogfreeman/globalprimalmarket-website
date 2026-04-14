@@ -204,13 +204,13 @@ const Dashboard = () => {
                     style={{
                       color: "#757C86",
                       margin: 0,
-                      marginTop: "-100px",
+                      marginTop: "-20px",
                       fontSize: "14px",
                     }}
                   >
                     ≈ {selectedUsdtValue.toLocaleString()} USDT
                   </p>
-
+                  <p></p>
                   {/* FOOTER */}
                   <p
                     style={{
