@@ -149,7 +149,7 @@ const Dashboard = () => {
             {(() => {
               const balances = user.balance || {};
 
-              // Convert all to USDT
+              // Convert all assets to USDT total
               const totalUSDT = Object.keys(balances).reduce((sum, coin) => {
                 const crypto = CRYPTO_MODES.find((c) => c.symbol === coin);
                 const amount = Number(balances[coin]) || 0;
@@ -160,7 +160,7 @@ const Dashboard = () => {
                 return sum + amount * crypto.rate;
               }, 0);
 
-              // Selected coin value
+              // Main displayed value
               let displayAmount = 0;
 
               if (selectedCoin === "usdt") {
@@ -168,6 +168,18 @@ const Dashboard = () => {
               } else {
                 displayAmount = Number(balances[selectedCoin]) || 0;
               }
+
+              // ✅ Selected coin USDT equivalent
+              const crypto = CRYPTO_MODES.find(
+                (c) => c.symbol === selectedCoin,
+              );
+
+              const selectedUsdtValue =
+                selectedCoin === "usdt"
+                  ? totalUSDT
+                  : crypto
+                    ? Number(balances[selectedCoin] || 0) * crypto.rate
+                    : 0;
 
               return (
                 <>
@@ -187,15 +199,16 @@ const Dashboard = () => {
                     </h3>
                   </div>
 
-                  {/* ALWAYS SHOW TOTAL USDT */}
+                  {/* USDT EQUIVALENT (SELECTED ONLY) */}
                   <p
                     style={{
                       color: "#757C86",
                       margin: 0,
+                      marginTop: "-100px",
                       fontSize: "14px",
                     }}
                   >
-                    ≈ {usdtValue.toLocaleString()} USDT
+                    ≈ {selectedUsdtValue.toLocaleString()} USDT
                   </p>
 
                   {/* FOOTER */}
@@ -214,7 +227,7 @@ const Dashboard = () => {
                   {/* DROPDOWN */}
                   {showDropdown && (
                     <div className="balance-dropdown">
-                      {/* ✅ USDT FIRST */}
+                      {/* USDT FIRST (TOTAL PORTFOLIO) */}
                       <div
                         className="dropdown-item"
                         onClick={() => {
