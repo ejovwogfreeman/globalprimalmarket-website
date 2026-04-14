@@ -244,6 +244,26 @@ const Profile = () => {
               </span>
             </div>
 
+            {/* <div className="user-info">
+              <span style={{ fontWeight: 600 }}>Balances:</span>
+              <div className="balance-grid">
+                {user?.balance &&
+                  Object.entries(user.balance).map(([symbol, amount]) => (
+                    <div key={symbol} className="balance-item">
+                      <strong>
+                        {Number(amount).toLocaleString("en-US", {
+                          minimumFractionDigits: 5,
+                          maximumFractionDigits: 5,
+                        })}
+                      </strong>
+                      <span className="balance-mode">
+                        {symbol.toUpperCase()}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div> */}
+
             <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
 
@@ -271,9 +291,11 @@ const Profile = () => {
                   return (
                     <>
                       {/* ✅ TOTAL (ABOVE GRID) */}
-                      <div className="total">
+                      <div className="balance-item total">
                         <span className="balance-mode">TOTAL BALANCE</span>
-                        <div className="balance-item">
+                        <div
+                          style={{ display: "flex", alignItems: "baseline" }}
+                        >
                           <strong>
                             {totalUSDT.toLocaleString("en-US", {
                               minimumFractionDigits: 2,
@@ -301,8 +323,13 @@ const Profile = () => {
                                 : 0;
 
                           return (
-                            <div key={symbol}>
-                              <div className="balance-item">
+                            <div key={symbol} className="balance-item">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "baseline",
+                                }}
+                              >
                                 <strong>
                                   {value.toLocaleString("en-US", {
                                     minimumFractionDigits: 5,
