@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [bots, setBots] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedCoin, setSelectedCoin] = useState("btc");
+  const [selectedCoin, setSelectedCoin] = useState("usdt");
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
@@ -116,74 +116,6 @@ const Dashboard = () => {
           <p>Welcome back, {userName || "User"} 👋</p>
           <p>Current Date & Time: {formattedDateTime}</p>
         </div>
-
-        {/* {user?.balance && (
-          <div className="balance-card">
-            <div
-              className="balance-header"
-              onClick={() => setShowDropdown(!showDropdown)}
-            >
-              <h3
-                style={{
-                  textTransform: "uppercase",
-                  margin: 0,
-                  color: "#38BDF8",
-                }}
-              >
-                {selectedCoin} Balance
-              </h3>
-
-              <FaChevronDown
-                style={{
-                  transform: showDropdown ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: "0.3s",
-                }}
-              />
-            </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <h1 className="balance-amount">
-                {user.balance[selectedCoin]?.toLocaleString() ?? 0}
-              </h1>
-              <h3
-                style={{
-                  textTransform: "uppercase",
-                  marginLeft: "5px",
-                  color: "#757C86",
-                }}
-              >
-                {selectedCoin}
-              </h3>
-            </div>
-            <p
-              style={{
-                textTransform: "uppercase",
-                marginLeft: "7px",
-                color: "#757C86",
-                textAlign: "right",
-                margin: "0px",
-              }}
-            >
-              Global Primal Wallet
-            </p>
-
-            {showDropdown && (
-              <div className="balance-dropdown">
-                {Object.keys(user.balance).map((coin) => (
-                  <div
-                    key={coin}
-                    className="dropdown-item"
-                    onClick={() => {
-                      setSelectedCoin(coin);
-                      setShowDropdown(false);
-                    }}
-                  >
-                    {coin.toUpperCase()}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )} */}
 
         {/* ✅ Balance Card */}
         {user?.balance && (
