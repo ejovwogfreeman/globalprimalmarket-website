@@ -294,7 +294,7 @@ const Profile = () => {
                       <div className="balance-item total">
                         <span
                           className="balance-mode"
-                          style={{ marginLeft: "0px" }}
+                          style={{ marginLeft: "0px", marginBottom: "0px" }}
                         >
                           TOTAL BALANCE
                         </span>
