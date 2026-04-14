@@ -202,9 +202,10 @@ const Dashboard = () => {
                   <p
                     style={{
                       textTransform: "uppercase",
+                      marginLeft: "7px",
                       color: "#757C86",
+                      textAlign: "right",
                       margin: "0px",
-                      fontSize: "12px",
                     }}
                   >
                     Global Primal Wallet
