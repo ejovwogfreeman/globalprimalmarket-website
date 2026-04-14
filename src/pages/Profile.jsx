@@ -267,7 +267,7 @@ const Profile = () => {
             <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
 
-              <div className="balance-grid">
+              <div>
                 {user?.balance &&
                   (() => {
                     const balances = user.balance;
@@ -299,7 +299,7 @@ const Profile = () => {
                               maximumFractionDigits: 2,
                             })}
                           </strong>
-                          <span className="balance-mode">TOTAL (USDT)</span>
+                          <span className="balance-mode">USDT</span>
                         </div>
 
                         {/* ✅ EACH COIN */}
@@ -318,16 +318,18 @@ const Profile = () => {
                                 : 0;
 
                           return (
-                            <div key={symbol} className="balance-item">
-                              <strong>
-                                {value.toLocaleString("en-US", {
-                                  minimumFractionDigits: 5,
-                                  maximumFractionDigits: 5,
-                                })}
-                              </strong>
+                            <div className="balance-grid">
+                              <div key={symbol} className="balance-item">
+                                <strong>
+                                  {value.toLocaleString("en-US", {
+                                    minimumFractionDigits: 5,
+                                    maximumFractionDigits: 5,
+                                  })}
+                                </strong>
 
-                              <span className="balance-mode">
-                                {symbol.toUpperCase()}{" "}
+                                <span className="balance-mode">
+                                  {symbol.toUpperCase()}{" "}
+                                </span>
                                 <small style={{ color: "#757C86" }}>
                                   (
                                   {usdtValue.toLocaleString("en-US", {
@@ -336,7 +338,7 @@ const Profile = () => {
                                   })}{" "}
                                   USDT)
                                 </small>
-                              </span>
+                              </div>
                             </div>
                           );
                         })}
