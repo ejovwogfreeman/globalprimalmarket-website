@@ -291,15 +291,17 @@ const Profile = () => {
                   return (
                     <>
                       {/* ✅ TOTAL (ABOVE GRID) */}
-                      <div className="balance-item total">
+                      <div className="total">
                         <span className="balance-mode">TOTAL BALANCE</span>
-                        <strong>
-                          {totalUSDT.toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </strong>
-                        <span className="balance-mode">USDT</span>
+                        <div className="balance-item">
+                          <strong>
+                            {totalUSDT.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </strong>
+                          <span className="balance-mode">USDT</span>
+                        </div>
                       </div>
 
                       {/* ✅ GRID (ONLY COINS) */}
@@ -319,17 +321,18 @@ const Profile = () => {
                                 : 0;
 
                           return (
-                            <div key={symbol} className="balance-item">
-                              <strong>
-                                {value.toLocaleString("en-US", {
-                                  minimumFractionDigits: 5,
-                                  maximumFractionDigits: 5,
-                                })}
-                              </strong>
-                              <span className="balance-mode">
-                                {symbol.toUpperCase()}{" "}
-                              </span>
-                              <br />
+                            <div key={symbol}>
+                              <div className="balance-item">
+                                <strong>
+                                  {value.toLocaleString("en-US", {
+                                    minimumFractionDigits: 5,
+                                    maximumFractionDigits: 5,
+                                  })}
+                                </strong>
+                                <span className="balance-mode">
+                                  {symbol.toUpperCase()}{" "}
+                                </span>
+                              </div>
                               <small style={{ color: "#757C86" }}>
                                 (
                                 {usdtValue.toLocaleString("en-US", {
