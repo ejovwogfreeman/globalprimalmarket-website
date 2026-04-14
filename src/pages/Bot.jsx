@@ -5,15 +5,7 @@ import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../data";
 import { FaRobot } from "react-icons/fa";
-
-const CRYPTO_MODES = [
-  { symbol: "btc", rate: 40000 },
-  { symbol: "eth", rate: 2500 },
-  { symbol: "sol", rate: 120 },
-  { symbol: "trx", rate: 0.07 },
-  { symbol: "bnb", rate: 350 },
-  { symbol: "xrp", rate: 0.5 },
-];
+import { CRYPTO_MODES } from "../data";
 
 const Bot = () => {
   const { id } = useParams();

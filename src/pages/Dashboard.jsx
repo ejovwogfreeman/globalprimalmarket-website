@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../data";
+import { CRYPTO_MODES } from "../data";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -116,8 +117,7 @@ const Dashboard = () => {
           <p>Current Date & Time: {formattedDateTime}</p>
         </div>
 
-        {/* ✅ Balance Card */}
-        {user?.balance && (
+        {/* {user?.balance && (
           <div className="balance-card">
             <div
               className="balance-header"
@@ -182,6 +182,150 @@ const Dashboard = () => {
                 ))}
               </div>
             )}
+          </div>
+        )} */}
+
+        {/* ✅ Balance Card */}
+        {user?.balance && (
+          <div className="balance-card">
+            {/* HEADER */}
+            <div
+              className="balance-header"
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              <h3
+                style={{
+                  textTransform: "uppercase",
+                  margin: 0,
+                  color: "#38BDF8",
+                }}
+              >
+                {selectedCoin === "usdt"
+                  ? "Total Balance"
+                  : `${selectedCoin} Balance`}
+              </h3>
+
+              <FaChevronDown
+                style={{
+                  transform: showDropdown ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "0.3s",
+                }}
+              />
+            </div>
+
+            {/* CALCULATIONS */}
+            {(() => {
+              const balances = user.balance || {};
+
+              // Convert all to USDT
+              const totalUSDT = Object.keys(balances).reduce((sum, coin) => {
+                const crypto = CRYPTO_MODES.find((c) => c.symbol === coin);
+                const amount = Number(balances[coin]) || 0;
+
+                if (coin === "usdt") return sum + amount;
+                if (!crypto) return sum;
+
+                return sum + amount * crypto.rate;
+              }, 0);
+
+              // Selected coin value
+              let displayAmount = 0;
+
+              if (selectedCoin === "usdt") {
+                displayAmount = totalUSDT;
+              } else {
+                displayAmount = Number(balances[selectedCoin]) || 0;
+              }
+
+              return (
+                <>
+                  {/* MAIN BALANCE */}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <h1 className="balance-amount">
+                      {displayAmount.toLocaleString()}
+                    </h1>
+                    <h3
+                      style={{
+                        textTransform: "uppercase",
+                        marginLeft: "5px",
+                        color: "#757C86",
+                      }}
+                    >
+                      {selectedCoin.toUpperCase()}
+                    </h3>
+                  </div>
+
+                  {/* ALWAYS SHOW TOTAL USDT */}
+                  <p
+                    style={{
+                      color: "#757C86",
+                      margin: 0,
+                      fontSize: "14px",
+                    }}
+                  >
+                    ≈ {totalUSDT.toLocaleString()} USDT
+                  </p>
+
+                  {/* FOOTER */}
+                  <p
+                    style={{
+                      textTransform: "uppercase",
+                      color: "#757C86",
+                      margin: "0px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Global Primal Wallet
+                  </p>
+
+                  {/* DROPDOWN */}
+                  {showDropdown && (
+                    <div className="balance-dropdown">
+                      {/* ✅ USDT FIRST */}
+                      <div
+                        className="dropdown-item"
+                        onClick={() => {
+                          setSelectedCoin("usdt");
+                          setShowDropdown(false);
+                        }}
+                      >
+                        USDT (Total) — {totalUSDT.toLocaleString()}
+                      </div>
+
+                      {/* OTHER COINS */}
+                      {Object.keys(balances).map((coin) => {
+                        const crypto = CRYPTO_MODES.find(
+                          (c) => c.symbol === coin,
+                        );
+
+                        const amount = Number(balances[coin]) || 0;
+
+                        const usdtValue =
+                          coin === "usdt"
+                            ? amount
+                            : crypto
+                              ? amount * crypto.rate
+                              : 0;
+
+                        return (
+                          <div
+                            key={coin}
+                            className="dropdown-item"
+                            onClick={() => {
+                              setSelectedCoin(coin);
+                              setShowDropdown(false);
+                            }}
+                          >
+                            {coin.toUpperCase()} — {amount.toLocaleString()} (
+                            {usdtValue.toLocaleString()} USDT)
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         )}
 
