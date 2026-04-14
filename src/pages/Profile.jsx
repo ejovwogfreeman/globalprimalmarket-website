@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { FaPenAlt } from "react-icons/fa"; // Pencil icon
-import { COUNTRIES, BASE_URL } from "../data";
+import { COUNTRIES, BASE_URL, CRYPTO_MODES } from "../data";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -244,7 +244,7 @@ const Profile = () => {
               </span>
             </div>
 
-            <div className="user-info">
+            {/* <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
               <div className="balance-grid">
                 {user?.balance &&
@@ -261,6 +261,88 @@ const Profile = () => {
                       </span>
                     </div>
                   ))}
+              </div>
+            </div> */}
+
+            <div className="user-info">
+              <span style={{ fontWeight: 600 }}>Balances:</span>
+
+              <div className="balance-grid">
+                {user?.balance &&
+                  (() => {
+                    const balances = user.balance;
+
+                    // ✅ Total portfolio in USDT
+                    const totalUSDT = Object.entries(balances).reduce(
+                      (sum, [symbol, amount]) => {
+                        const crypto = CRYPTO_MODES.find(
+                          (c) => c.symbol === symbol,
+                        );
+
+                        const value = Number(amount) || 0;
+
+                        if (symbol === "usdt") return sum + value;
+                        if (!crypto) return sum;
+
+                        return sum + value * crypto.rate;
+                      },
+                      0,
+                    );
+
+                    return (
+                      <>
+                        {/* ✅ TOTAL ROW */}
+                        <div className="balance-item total">
+                          <strong>
+                            {totalUSDT.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </strong>
+                          <span className="balance-mode">TOTAL (USDT)</span>
+                        </div>
+
+                        {/* ✅ EACH COIN */}
+                        {Object.entries(balances).map(([symbol, amount]) => {
+                          const crypto = CRYPTO_MODES.find(
+                            (c) => c.symbol === symbol,
+                          );
+
+                          const value = Number(amount) || 0;
+
+                          const usdtValue =
+                            symbol === "usdt"
+                              ? value
+                              : crypto
+                                ? value * crypto.rate
+                                : 0;
+
+                          return (
+                            <div key={symbol} className="balance-item">
+                              <strong>
+                                {value.toLocaleString("en-US", {
+                                  minimumFractionDigits: 5,
+                                  maximumFractionDigits: 5,
+                                })}
+                              </strong>
+
+                              <span className="balance-mode">
+                                {symbol.toUpperCase()}{" "}
+                                <small style={{ color: "#757C86" }}>
+                                  (
+                                  {usdtValue.toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}{" "}
+                                  USDT)
+                                </small>
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </>
+                    );
+                  })()}
               </div>
             </div>
 
