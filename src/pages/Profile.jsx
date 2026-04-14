@@ -267,42 +267,43 @@ const Profile = () => {
             <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
 
-              <div>
-                {user?.balance &&
-                  (() => {
-                    const balances = user.balance;
+              {user?.balance &&
+                (() => {
+                  const balances = user.balance;
 
-                    // ✅ Total portfolio in USDT
-                    const totalUSDT = Object.entries(balances).reduce(
-                      (sum, [symbol, amount]) => {
-                        const crypto = CRYPTO_MODES.find(
-                          (c) => c.symbol === symbol,
-                        );
+                  // ✅ Total USDT calculation
+                  const totalUSDT = Object.entries(balances).reduce(
+                    (sum, [symbol, amount]) => {
+                      const crypto = CRYPTO_MODES.find(
+                        (c) => c.symbol === symbol,
+                      );
 
-                        const value = Number(amount) || 0;
+                      const value = Number(amount) || 0;
 
-                        if (symbol === "usdt") return sum + value;
-                        if (!crypto) return sum;
+                      if (symbol === "usdt") return sum + value;
+                      if (!crypto) return sum;
 
-                        return sum + value * crypto.rate;
-                      },
-                      0,
-                    );
+                      return sum + value * crypto.rate;
+                    },
+                    0,
+                  );
 
-                    return (
-                      <>
-                        {/* ✅ TOTAL ROW */}
-                        <div className="balance-item total">
-                          <strong>
-                            {totalUSDT.toLocaleString("en-US", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </strong>
-                          <span className="balance-mode">USDT</span>
-                        </div>
+                  return (
+                    <>
+                      {/* ✅ TOTAL (ABOVE GRID) */}
+                      <div className="balance-item total">
+                        <span className="balance-mode">TOTAL BALANCE</span>
+                        <strong>
+                          {totalUSDT.toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </strong>
+                        <span className="balance-mode">USDT</span>
+                      </div>
 
-                        {/* ✅ EACH COIN */}
+                      {/* ✅ GRID (ONLY COINS) */}
+                      <div className="balance-grid">
                         {Object.entries(balances).map(([symbol, amount]) => {
                           const crypto = CRYPTO_MODES.find(
                             (c) => c.symbol === symbol,
@@ -318,34 +319,32 @@ const Profile = () => {
                                 : 0;
 
                           return (
-                            <div className="balance-grid">
-                              <div key={symbol} className="balance-item">
-                                <strong>
-                                  {value.toLocaleString("en-US", {
-                                    minimumFractionDigits: 5,
-                                    maximumFractionDigits: 5,
-                                  })}
-                                </strong>
-
-                                <span className="balance-mode">
-                                  {symbol.toUpperCase()}{" "}
-                                </span>
-                                <small style={{ color: "#757C86" }}>
-                                  (
-                                  {usdtValue.toLocaleString("en-US", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })}{" "}
-                                  USDT)
-                                </small>
-                              </div>
+                            <div key={symbol} className="balance-item">
+                              <strong>
+                                {value.toLocaleString("en-US", {
+                                  minimumFractionDigits: 5,
+                                  maximumFractionDigits: 5,
+                                })}
+                              </strong>
+                              <span className="balance-mode">
+                                {symbol.toUpperCase()}{" "}
+                              </span>
+                              <br />
+                              <small style={{ color: "#757C86" }}>
+                                (
+                                {usdtValue.toLocaleString("en-US", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}{" "}
+                                USDT)
+                              </small>
                             </div>
                           );
                         })}
-                      </>
-                    );
-                  })()}
-              </div>
+                      </div>
+                    </>
+                  );
+                })()}
             </div>
 
             <div className="user-info">
