@@ -292,7 +292,12 @@ const Profile = () => {
                     <>
                       {/* ✅ TOTAL (ABOVE GRID) */}
                       <div className="balance-item total">
-                        <span className="balance-mode">TOTAL BALANCE</span>
+                        <span
+                          className="balance-mode"
+                          style={{ marginLeft: "0px" }}
+                        >
+                          TOTAL BALANCE
+                        </span>
                         <div
                           style={{ display: "flex", alignItems: "baseline" }}
                         >
@@ -341,12 +346,12 @@ const Profile = () => {
                                 </span>
                               </div>
                               <small style={{ color: "#757C86" }}>
-                                (
+                                ≈
                                 {usdtValue.toLocaleString("en-US", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })}{" "}
-                                USDT)
+                                USDT
                               </small>
                             </div>
                           );
