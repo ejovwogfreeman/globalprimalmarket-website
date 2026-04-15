@@ -235,7 +235,7 @@ const Dashboard = () => {
                           setShowDropdown(false);
                         }}
                       >
-                        USDT (Total) — {totalUSDT.toLocaleString()} USDT
+                        USDT (TOTAL) — {totalUSDT.toLocaleString()} USDT
                       </div>
 
                       {/* OTHER COINS */}

@@ -244,26 +244,6 @@ const Profile = () => {
               </span>
             </div>
 
-            {/* <div className="user-info">
-              <span style={{ fontWeight: 600 }}>Balances:</span>
-              <div className="balance-grid">
-                {user?.balance &&
-                  Object.entries(user.balance).map(([symbol, amount]) => (
-                    <div key={symbol} className="balance-item">
-                      <strong>
-                        {Number(amount).toLocaleString("en-US", {
-                          minimumFractionDigits: 5,
-                          maximumFractionDigits: 5,
-                        })}
-                      </strong>
-                      <span className="balance-mode">
-                        {symbol.toUpperCase()}
-                      </span>
-                    </div>
-                  ))}
-              </div>
-            </div> */}
-
             <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
 
@@ -346,7 +326,7 @@ const Profile = () => {
                                 </span>
                               </div>
                               <small style={{ color: "#757C86" }}>
-                                ≈
+                                ≈{" "}
                                 {usdtValue.toLocaleString("en-US", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
