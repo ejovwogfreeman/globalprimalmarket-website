@@ -164,9 +164,16 @@ const Dashboard = () => {
               let displayAmount = 0;
 
               if (selectedCoin === "usdt") {
-                displayAmount = totalUSDT;
+                displayAmount = totalUSDT.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                });
               } else {
-                displayAmount = Number(balances[selectedCoin]) || 0;
+                displayAmount =
+                  Number(balances[selectedCoin]).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }) || 0;
               }
 
               // ✅ Selected coin USDT equivalent
@@ -176,9 +183,17 @@ const Dashboard = () => {
 
               const selectedUsdtValue =
                 selectedCoin === "usdt"
-                  ? totalUSDT
+                  ? totalUSDT.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
                   : crypto
-                    ? Number(balances[selectedCoin] || 0) * crypto.rate
+                    ? (
+                        Number(balances[selectedCoin] || 0) * crypto.rate
+                      ).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
                     : 0;
 
               return (
@@ -245,18 +260,7 @@ const Dashboard = () => {
 
                       {/* OTHER COINS */}
                       {Object.keys(balances).map((coin) => {
-                        const crypto = CRYPTO_MODES.find(
-                          (c) => c.symbol === coin,
-                        );
-
                         const amount = Number(balances[coin]) || 0;
-
-                        const usdtValue =
-                          coin === "usdt"
-                            ? amount
-                            : crypto
-                              ? amount * crypto.rate
-                              : 0;
 
                         return (
                           <div
