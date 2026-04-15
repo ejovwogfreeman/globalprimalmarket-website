@@ -235,7 +235,12 @@ const Dashboard = () => {
                           setShowDropdown(false);
                         }}
                       >
-                        USDT (TOTAL) — {totalUSDT.toLocaleString()} USDT
+                        USDT (TOTAL) —{" "}
+                        {totalUSDT.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        USDT
                       </div>
 
                       {/* OTHER COINS */}
@@ -262,7 +267,11 @@ const Dashboard = () => {
                               setShowDropdown(false);
                             }}
                           >
-                            {coin.toUpperCase()} — {amount.toLocaleString()}{" "}
+                            {coin.toUpperCase()} —{" "}
+                            {amount.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
                             {coin.toUpperCase()}
                           </div>
                         );
