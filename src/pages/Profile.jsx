@@ -366,7 +366,7 @@ const Profile = () => {
             </button>
             <button
               className="action-btn delete-btn"
-              // style={{ marginLeft: "10px" }}
+              style={{ marginLeft: "10px" }}
               onClick={() => navigate("/delete-account")}
             >
               DELETE ACCOUNT
