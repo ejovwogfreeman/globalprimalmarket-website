@@ -36,6 +36,7 @@ const DeleteAccount = () => {
       toast.success("Account deleted successfully");
 
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {
