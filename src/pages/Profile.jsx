@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { FaPenAlt } from "react-icons/fa"; // Pencil icon
 import { COUNTRIES, BASE_URL, CRYPTO_MODES } from "../data";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -361,7 +362,7 @@ const Profile = () => {
             >
               UPDATE PROFILE
             </button>
-            <Link className="action-btn update-btn" to="delete-account">
+            <Link className="action-btn delete-btn" to="delete-account">
               DELETE ACCOUNT
             </Link>
           </div>
