@@ -362,7 +362,7 @@ const Profile = () => {
             >
               UPDATE PROFILE
             </button>
-            <Link className="action-btn delete-btn" to="delete-account">
+            <Link className="action-btn delete-btn" to="/delete-account">
               DELETE ACCOUNT
             </Link>
           </div>
