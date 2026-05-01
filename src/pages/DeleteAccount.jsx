@@ -80,7 +80,7 @@ const DeleteAccount = () => {
         <div className="auth-footer">
           <p>
             Changed your mind?{" "}
-            <Link to="/dashboard" className="auth-link">
+            <Link to="/profile" className="auth-link">
               Go Back
             </Link>
           </p>
