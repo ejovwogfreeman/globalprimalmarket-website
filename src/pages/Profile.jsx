@@ -25,6 +25,8 @@ const Profile = () => {
   const [country, setCountry] = useState("Select country");
   const [profilePicture, setProfilePicture] = useState(null);
 
+  const navigate = useNavigate();
+
   // ---------------- Fetch current logged-in user ----------------
   const fetchUser = async () => {
     setLoading(true);
@@ -170,8 +172,6 @@ const Profile = () => {
         return "rgba(128,128,128,0.3)";
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <div style={{ marginTop: "70px" }}>
