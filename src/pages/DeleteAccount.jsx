@@ -17,7 +17,7 @@ const DeleteAccount = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${BASE_URL}/delete-account`, {
+      const res = await fetch(`${BASE_URL}/user/delete-account`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
