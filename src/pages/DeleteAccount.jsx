@@ -6,25 +6,14 @@ import { BASE_URL } from "../data";
 
 const DeleteAccount = () => {
   const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const token = localStorage.getItem("token");
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-
-    if (!password) {
-      toast.error("Enter your password to confirm!");
-      return;
-    }
-
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete your account? This action cannot be undone.",
-    );
-
-    if (!confirmDelete) return;
-
+  const handleDelete = async () => {
     try {
       setLoading(true);
 
@@ -32,7 +21,7 @@ const DeleteAccount = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // ✅ sends req.user_id from backend middleware
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ password }),
       });
@@ -46,7 +35,6 @@ const DeleteAccount = () => {
 
       toast.success("Account deleted successfully");
 
-      // ✅ Clear auth + redirect
       localStorage.removeItem("token");
 
       setTimeout(() => navigate("/"), 1500);
@@ -54,12 +42,25 @@ const DeleteAccount = () => {
       toast.error("Server error. Try again.");
     } finally {
       setLoading(false);
+      setShowDeleteModal(false);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!password) {
+      toast.error("Enter your password to confirm!");
+      return;
+    }
+
+    // ✅ Open modal instead of window.confirm
+    setShowDeleteModal(true);
   };
 
   return (
     <div className="form-container">
-      <form onSubmit={handleDelete}>
+      <form onSubmit={handleSubmit}>
         <h2>⚠️ Delete Account</h2>
 
         <p style={{ color: "red", fontSize: "14px" }}>
@@ -86,6 +87,29 @@ const DeleteAccount = () => {
           </p>
         </div>
       </form>
+
+      {/* ------------------ DELETE MODAL ------------------ */}
+      {showDeleteModal && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Are you sure?</h3>
+            <p>This action cannot be undone.</p>
+
+            <div className="modal-actions">
+              <button onClick={handleDelete} disabled={loading}>
+                {loading ? "Deleting..." : "Yes, Delete"}
+              </button>
+
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
