@@ -28,6 +28,7 @@ import InvestFunds from "./pages/InvestFunds";
 import InvestPlans from "./pages/InvestPlans";
 import WithdrawFunds from "./pages/WithdrawFunds";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import DeleteAccount from "./pages/DeleteAccount";
 
 function App() {
   return (
@@ -143,6 +144,14 @@ function App() {
           element={
             <CheckAuth>
               <WithdrawFunds />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/delete-account"
+          element={
+            <CheckAuth>
+              <DeleteAccount />
             </CheckAuth>
           }
         />
