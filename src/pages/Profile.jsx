@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { toast } from "react-toastify";
 import { FaPenAlt } from "react-icons/fa"; // Pencil icon
 import { COUNTRIES, BASE_URL, CRYPTO_MODES } from "../data";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -170,6 +170,8 @@ const Profile = () => {
         return "rgba(128,128,128,0.3)";
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div style={{ marginTop: "70px" }}>
@@ -362,9 +364,13 @@ const Profile = () => {
             >
               UPDATE PROFILE
             </button>
-            <Link className="action-btn delete-btn" to="/delete-account">
+            <button
+              className="action-btn delete-btn"
+              // style={{ marginLeft: "10px" }}
+              onClick={() => navigate("/delete-account")}
+            >
               DELETE ACCOUNT
-            </Link>
+            </button>
           </div>
         </div>
       </div>
